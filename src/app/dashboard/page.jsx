@@ -1,9 +1,15 @@
 "use client"
 import React, { useState } from 'react';
-import { Menu, X, Clock, TrendingUp, CheckCircle, Calendar, MessageSquare } from 'lucide-react';
+import { Menu, X, Clock, TrendingUp, CheckCircle, Calendar, MessageSquare, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+   const handleProfileClick = () => {
+    router.push('/dashboard/profile');
+  };
 
   const menuItems = [
     { label: 'Dashboard', href: '/dashboard', active: true },
@@ -11,19 +17,20 @@ export default function Dashboard() {
     { label: 'Tasks', href: '/dashboard/tasks', active: false },
     { label: 'Clients', href: '/dashboard/clients', active: false },
     { label: 'Accounting Reports', href: '/dashboard/accounting-reports', active: false },
-    { label: 'HR Analytics', href: '/dashboard/hr-analysis', active: false }
+    { label: 'HR Analytics', href: '/dashboard/hr-analysis', active: false },
+      { label: 'Chat Support', href: '/dashboard/Chat-Support', active: false }
   ];
 
   const statsCards = [
     { 
-      label: 'Recruitment %', 
+      label: 'Conversions %', 
       value: '18.7%', 
       subtitle: '5% More than last week', 
       color: 'from-green-400 to-green-500',
       icon: <TrendingUp size={20} />
     },
     { 
-      label: 'Req. Delay', 
+      label: 'Task Delay', 
       value: '4.5%', 
       subtitle: '3% less than last week', 
       color: 'from-orange-400 to-orange-500',
@@ -39,9 +46,27 @@ export default function Dashboard() {
   ];
 
   const upcomingTasks = [
-    { text: 'Follow up with a new leads', priority: 'high' },
-    { text: 'Complete Client Verification', priority: 'medium' },
-    { text: 'Prepare Compliance report', priority: 'low' }
+    { 
+      id: 'task_101',
+      text: 'Follow up with a new leads', 
+      priority: 'high',
+      time: '10:30 AM',
+      assignedTo: 'You'
+    },
+    { 
+      id: 'task_102',
+      text: 'Complete Client Verification', 
+      priority: 'medium',
+      time: '2:00 PM',
+      assignedTo: 'Rahul S'
+    },
+    { 
+      id: 'task_103',
+      text: 'Prepare Compliance report', 
+      priority: 'low',
+      time: '4:30 PM',
+      assignedTo: 'Priya M'
+    }
   ];
 
   const aiInsights = [
@@ -51,10 +76,10 @@ export default function Dashboard() {
   ];
 
   const leadSources = [
-    { name: 'Social', percentage: 60.1, color: '#10B981' },
-    { name: 'Organic', percentage: 25.2, color: '#3B82F6' },
-    { name: 'Paid', percentage: 12.8, color: '#F59E0B' },
-    { name: 'Direct', percentage: 1.9, color: '#6B7280' }
+    { name: 'Referrals', percentage: 60.1, color: '#10B981' },
+    { name: 'MetaAds', percentage: 25.2, color: '#3B82F6' },
+    { name: 'Instagram', percentage: 12.8, color: '#F59E0B' },
+    { name: 'Facebook', percentage: 1.9, color: '#6B7280' }
   ];
 
   const automatedReports = [
@@ -66,8 +91,12 @@ export default function Dashboard() {
     window.location.href = '/reports';
   };
 
+  const handleTaskClick = (taskId) => {
+    router.push(`/dashboard/tasks/${taskId}`);
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div 
@@ -77,11 +106,11 @@ export default function Dashboard() {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-linear-to-b from-purple-900 via-purple-800 to-purple-900 transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out overflow-y-auto shadow-2xl lg:relative`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-linear-to-b from-purple-900 via-purple-800 to-purple-900 transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out shadow-2xl lg:relative overflow-y-auto scrollbar-hide`}>
         <div className="flex items-center justify-between p-4 lg:p-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition" onClick={handleProfileClick}>
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
-              <img src="images/user.png" alt="User" className="w-full h-full object-cover" />
+              <img src="/images/user.png" alt="User" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="text-white font-semibold text-sm">Welcome, User!</p>
@@ -123,9 +152,9 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 w-full">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Header */}
-        <header className="bg-white shadow-sm sticky top-0 z-30 border-b border-gray-200">
+        <header className="bg-white shadow-sm border-b border-gray-200 shrink-0 z-30">
           <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
             <div className="flex items-center gap-3 md:gap-4">
               <button 
@@ -145,8 +174,8 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Dashboard Content */}
-        <main className="p-3 md:p-4 lg:p-6 space-y-4 md:space-y-6">
+        {/* Dashboard Content - Scrollable */}
+        <main className="flex-1 overflow-y-auto scrollbar-hide p-3 md:p-4 lg:p-6 space-y-4 md:space-y-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {statsCards.map((stat, index) => (
@@ -168,24 +197,68 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
             {/* Left Column - Charts */}
             <div className="xl:col-span-2 space-y-4 md:space-y-6">
-              {/* Lean Stats Summary */}
-              <div className="bg-white rounded-xl shadow-sm p-4 md:p-5 lg:p-6 border border-gray-100">
+            <div className="bg-white rounded-xl shadow-sm p-4 md:p-5 lg:p-6 border border-gray-100">
                 <h3 className="font-bold text-gray-900 text-base md:text-lg mb-4 md:mb-5">Lean Stats Summary</h3>
-                <div className="flex items-end justify-between h-40 md:h-48 lg:h-56 gap-1 md:gap-2">
-                  {[
-                    {month: 'Jan', height: '50%', shade: 'bg-purple-300 hover:bg-purple-400'},
-                    {month: 'Feb', height: '65%', shade: 'bg-purple-400 hover:bg-purple-500'},
-                    {month: 'Mar', height: '60%', shade: 'bg-purple-400 hover:bg-purple-500'},
-                    {month: 'Apr', height: '95%', shade: 'bg-purple-500 hover:bg-purple-600'},
-                    {month: 'May', height: '70%', shade: 'bg-purple-400 hover:bg-purple-500'},
-                    {month: 'Jun', height: '55%', shade: 'bg-purple-300 hover:bg-purple-400'},
-                    {month: 'Jul', height: '45%', shade: 'bg-purple-400 hover:bg-purple-500'}
-                  ].map((bar, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-1 md:gap-2 flex-1">
-                      <div className={`w-full ${bar.shade} rounded-t-lg transition-all`} style={{height: bar.height}}></div>
-                      <span className="text-[10px] md:text-xs text-gray-600">{bar.month}</span>
+                
+                {/* Chart with grid lines */}
+                <div className="relative">
+                  {/* Y-axis labels */}
+                  <div className="absolute left-0 top-0 bottom-12 flex flex-col justify-between text-[10px] md:text-xs text-gray-500 pr-2">
+                    <span>100</span>
+                    <span>80</span>
+                    <span>60</span>
+                    <span>40</span>
+                    <span>20</span>
+                    <span>0</span>
+                  </div>
+                  
+                  {/* Chart area with grid */}
+                  <div className="ml-8 md:ml-10">
+                    {/* Horizontal grid lines */}
+                    <div className="relative h-48 md:h-56 lg:h-64">
+                      <div className="absolute inset-x-0 top-0 border-t border-dashed border-gray-200"></div>
+                      <div className="absolute inset-x-0 top-[20%] border-t border-dashed border-gray-200"></div>
+                      <div className="absolute inset-x-0 top-[40%] border-t border-dashed border-gray-200"></div>
+                      <div className="absolute inset-x-0 top-[60%] border-t border-dashed border-gray-200"></div>
+                      <div className="absolute inset-x-0 top-[80%] border-t border-dashed border-gray-200"></div>
+                      <div className="absolute inset-x-0 bottom-0 border-t border-gray-300"></div>
+                      
+                      {/* Bars */}
+                      <div className="relative h-full flex items-end justify-between gap-2 md:gap-3 lg:gap-4 px-2">
+                        {[
+                          {week: 'Week 1', height: '53%'},
+                          {week: 'Week 2', height: '43%'},
+                          {week: 'Week 3', height: '36%'},
+                          {week: 'Week 4', height: '30%'},
+                          {week: 'Week 5', height: '98%'},
+                          {week: 'Week 6', height: '26%'}
+                        ].map((bar, idx) => (
+                          <div key={idx} className="flex flex-col items-center flex-1 h-full justify-end pb-0">
+                            <div 
+                              className="w-full bg-purple-600 hover:bg-purple-700 transition-colors rounded-t-sm cursor-pointer" 
+                              style={{height: bar.height}}
+                            ></div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
+                    
+                    {/* X-axis labels */}
+                    <div className="flex justify-between text-[10px] md:text-xs text-gray-600 mt-2 px-2">
+                      <span className="flex-1 text-center">Week 1</span>
+                      <span className="flex-1 text-center">Week 2</span>
+                      <span className="flex-1 text-center">Week 3</span>
+                      <span className="flex-1 text-center">Week 4</span>
+                      <span className="flex-1 text-center">Week 5</span>
+                      <span className="flex-1 text-center">Week 6</span>
+                    </div>
+                    
+                    {/* Legend */}
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                      <div className="w-3 h-3 bg-purple-600 rounded-sm"></div>
+                      <span className="text-xs text-gray-600">2025</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -255,25 +328,48 @@ export default function Dashboard() {
 
               {/* Upcoming Tasks */}
               <div className="bg-white rounded-xl shadow-sm p-4 md:p-5 border border-gray-100">
-                <h3 className="font-bold text-gray-900 text-base md:text-lg mb-4">Upcoming Tasks</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-bold text-gray-900 text-base md:text-lg">Upcoming Tasks</h3>
+                  <button
+                    onClick={() => router.push('/dashboard/tasks')}
+                    className="text-xs text-purple-600 hover:text-purple-700 font-semibold"
+                  >
+                    View All
+                  </button>
+                </div>
                 <div className="space-y-2 md:space-y-3">
                   {upcomingTasks.map((task, index) => (
-                    <div key={index} className={`p-3 rounded-lg border-l-4 ${
-                      task.priority === 'high' ? 'bg-red-50 border-red-500' :
-                      task.priority === 'medium' ? 'bg-orange-50 border-orange-500' :
-                      'bg-yellow-50 border-yellow-500'
-                    }`}>
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs md:text-sm text-gray-700 flex-1">{task.text}</span>
-                        <span className={`text-[10px] md:text-xs font-medium px-2 py-1 rounded shrink-0 ${
-                          task.priority === 'high' ? 'bg-red-100 text-red-700' :
-                          task.priority === 'medium' ? 'bg-orange-100 text-orange-700' :
-                          'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {task.priority === 'high' ? 'High' : task.priority === 'medium' ? 'Med' : 'Low'}
-                        </span>
+                    <button
+                      key={index}
+                      onClick={() => handleTaskClick(task.id)}
+                      className={`w-full text-left p-3 rounded-lg border-l-4 transition-all hover:shadow-md hover:scale-[1.02] active:scale-[0.98] group ${
+                        task.priority === 'high' ? 'bg-red-50 border-red-500' :
+                        task.priority === 'medium' ? 'bg-orange-50 border-orange-500' :
+                        'bg-yellow-50 border-yellow-500'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs md:text-sm text-gray-700 font-medium block group-hover:text-purple-700 transition-colors">{task.text}</span>
+                          <div className="flex items-center gap-2 mt-1.5 text-[10px] md:text-xs text-gray-500">
+                            <Clock size={12} className="shrink-0" />
+                            <span>{task.time}</span>
+                            <span>•</span>
+                            <span className="truncate">{task.assignedTo}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`text-[10px] md:text-xs font-medium px-2 py-1 rounded ${
+                            task.priority === 'high' ? 'bg-red-100 text-red-700' :
+                            task.priority === 'medium' ? 'bg-orange-100 text-orange-700' :
+                            'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {task.priority === 'high' ? 'High' : task.priority === 'medium' ? 'Med' : 'Low'}
+                          </span>
+                          <ChevronRight size={16} className="text-gray-400 group-hover:text-purple-600 transition-colors" />
+                        </div>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -296,6 +392,16 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
+      {/* Global CSS for hiding scrollbar */}
+      <style jsx global>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 }

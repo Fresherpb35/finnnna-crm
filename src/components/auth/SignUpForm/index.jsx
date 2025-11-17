@@ -1,9 +1,10 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Check } from 'lucide-react';
 
 export default function SignUpForm() {
+   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
   const [values, setValues] = useState({
@@ -69,33 +70,41 @@ export default function SignUpForm() {
   };
 
   return (
-   <div className="min-h-screen w-full flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 bg-linear-to-br from-indigo-900 via-purple-900 to-indigo-800 relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-linear-to-br from-indigo-900 via-purple-900 to-indigo-800 relative overflow-hidden">
+      {/* Background Image/Pattern (simulating coins) */}
+      <div
+  className="absolute inset-0 opacity-20 bg-cover bg-center"
+  style={{
+    backgroundImage: "url('/images/bg-image.jpg')"
+  }}
+></div>
+
 
       {/* Background decoration */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-purple-500 rounded-full blur-3xl"></div>
-        <div className="absolute top-0 right-0 w-24 h-24 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-indigo-500 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full blur-3xl"></div>
       </div>
 
       {/* Form Container */}
-      <div className="relative w-full max-w-[90%] xs:max-w-sm sm:max-w-md">
-        <div className="space-y-3 sm:space-y-4 md:space-y-6">
-          {/* Logo Circle - Top Right */}
-          <div className="flex justify-end mb-1 sm:mb-2 md:mb-4">
-            <div className="w-14 h-14 xs:w-16 xs:h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-full flex items-center justify-center shadow-lg">
-              <div className="text-center">
-                <div className="text-gray-800 font-bold text-[9px] xs:text-[10px] sm:text-xs">App logo</div>
-                <div className="text-gray-600 text-[9px] xs:text-[10px] sm:text-xs">and</div>
-                <div className="text-gray-800 font-bold text-[9px] xs:text-[10px] sm:text-xs">tagline</div>
-              </div>
+      <div className="relative w-full max-w-4xl">
+        {/* Logo Circle - Top Right */}
+        <div className="flex justify-end mb-4 sm:mb-6">
+          <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 bg-gray-200 rounded-full flex items-center justify-center shadow-2xl">
+            <div className="text-center">
+              <div className="text-gray-800 font-bold text-base sm:text-lg lg:text-xl">App logo</div>
+              <div className="text-gray-600 text-xs sm:text-sm lg:text-base mt-1">and</div>
+              <div className="text-gray-800 font-bold text-base sm:text-lg lg:text-xl">Tagline</div>
             </div>
           </div>
+        </div>
 
+        <div className="space-y-4 sm:space-y-6">
           {/* Sign up Title */}
-          <h1 className="text-white text-xl xs:text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 md:mb-6">Sign up</h1>
+          <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold">Sign up</h1>
 
-          <div className="space-y-2.5 sm:space-y-3">
-            <div className="max-h-[55vh] xs:max-h-[50vh] sm:max-h-96 overflow-y-auto pr-1.5 sm:pr-2 space-y-2.5 sm:space-y-3 custom-scrollbar">
+            {/* Form Grid - 2 columns on larger screens */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {/* First Name */}
               <div className="w-full">
                 <input
@@ -106,10 +115,10 @@ export default function SignUpForm() {
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2 xs:py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-xs xs:text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.firstName && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.firstName}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.firstName}</span>
                 )}
               </div>
               
@@ -123,10 +132,10 @@ export default function SignUpForm() {
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.lastName && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.lastName}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.lastName}</span>
                 )}
               </div>
 
@@ -135,15 +144,15 @@ export default function SignUpForm() {
                 <input
                   type="number"
                   name="age"
-                  placeholder="Enter age"
+                  placeholder="Enter Age"
                   value={values.age}
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.age && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.age}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.age}</span>
                 )}
               </div>
 
@@ -157,10 +166,10 @@ export default function SignUpForm() {
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.email && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.email}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.email}</span>
                 )}
               </div>
 
@@ -174,10 +183,10 @@ export default function SignUpForm() {
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.password && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.password}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.password}</span>
                 )}
               </div>
 
@@ -191,15 +200,15 @@ export default function SignUpForm() {
                   onChange={handlePasswordConfirmChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 pr-12 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 pr-12 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {showPasswordCheck && !errors.confirmPassword && (
-                  <div className="absolute right-3 top-2.5 sm:top-3 w-7 h-7 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center animate-fadeIn">
+                  <div className="absolute right-3 top-3 sm:top-3.5 w-7 h-7 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center animate-fadeIn">
                     <Check className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                 )}
                 {errors.confirmPassword && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.confirmPassword}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.confirmPassword}</span>
                 )}
               </div>
 
@@ -208,15 +217,15 @@ export default function SignUpForm() {
                 <input
                   type="text"
                   name="employeeId"
-                  placeholder="Enter Employee ID"
+                  placeholder="Enter Employee Id"
                   value={values.employeeId}
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.employeeId && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.employeeId}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.employeeId}</span>
                 )}
               </div>
 
@@ -230,19 +239,19 @@ export default function SignUpForm() {
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.department && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.department}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.department}</span>
                 )}
               </div>
 
-              {/* Date of Joining */}
-              <div className="w-full">
+              {/* Date of Joining - Full width on both layouts */}
+              <div className="w-full sm:col-span-1">
                 <input
                   type="text"
                   name="dateOfJoining"
-                  placeholder="Enter Date of joining"
+                  placeholder="Enter date of joining"
                   value={values.dateOfJoining}
                   onChange={handleChange}
                   onFocus={(e) => e.target.type = 'date'}
@@ -251,61 +260,62 @@ export default function SignUpForm() {
                   }}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 />
                 {errors.dateOfJoining && (
-                  <span className="text-red-400 text-xs sm:text-sm mt-1 block">{errors.dateOfJoining}</span>
+                  <span className="text-red-300 text-xs sm:text-sm mt-1 block">{errors.dateOfJoining}</span>
                 )}
               </div>
             </div>
 
-            <button
-              onClick={handleSubmit}
-              disabled={isLoading}
-              className="w-full py-3 xs:py-3.5 sm:py-4 mt-3 sm:mt-4 md:mt-6 bg-purple-400 hover:bg-purple-500 text-indigo-900 font-bold text-sm xs:text-base sm:text-lg rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 active:scale-95"
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Loading...
-                </span>
-              ) : 'SIGN UP'}
-            </button>
-          </div>
-
-          <style jsx>{`
-            .custom-scrollbar::-webkit-scrollbar {
-              width: 6px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-track {
-              background: transparent;
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-              background: #a855f7;
-              border-radius: 3px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-              background: #9333ea;
-            }
-            @keyframes fadeIn {
-              from {
-                opacity: 0;
-                transform: scale(0.8);
-              }
-              to {
-                opacity: 1;
-                transform: scale(1);
-              }
-            }
-            .animate-fadeIn {
-              animation: fadeIn 0.3s ease-in-out;
-            }
-          `}</style>
+          {/* Submit Button */}
+        <button
+        onClick={handleSubmit}
+        disabled={isLoading}
+        className="w-full sm:w-80 py-3.5 sm:py-4 mt-4 sm:mt-6 bg-purple-400 hover:bg-purple-500 text-indigo-900 font-bold text-base sm:text-lg rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 active:scale-95"
+      >
+        {isLoading ? (
+          <span className="flex items-center justify-center gap-2">
+            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+            Loading...
+          </span>
+        ) : (
+          'SIGN UP'
+        )}
+      </button>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 }

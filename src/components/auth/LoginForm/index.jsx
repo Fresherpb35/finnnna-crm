@@ -36,11 +36,21 @@ export default function LoginForm({ onSubmit, isLoading }) {
           disabled={isLoading}
         />
 
+        {/* 🔹 Forgot Password link just below password field */}
+        <div className="text-right">
+          <Link
+            href="/forgot-password"
+            className="text-lg text-white-400 hover:text-purple-300 transition"
+          >
+            Forgot Password?
+          </Link>
+        </div>
+
         <Button 
           type="submit" 
           variant="primary" 
           isLoading={isLoading}
-          className="w-full mt-6"
+          className="w-full mt-2"
         >
           LOG IN
         </Button>

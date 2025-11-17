@@ -1,311 +1,341 @@
 'use client';
 
-import { ArrowLeft, Download, CheckCircle2, AlertCircle } from 'lucide-react';
-import { useRouter, useParams } from 'next/navigation';
+import { ArrowLeft, Download, CheckCircle2, Circle } from 'lucide-react';
 import { useRef } from 'react';
 
 export default function CRMReportPage() {
-  const router = useRouter();
-  const params = useParams();
   const reportRef = useRef(null);
 
   const reportData = {
     title: 'CRM Report — Loan Application Summary',
-    reportDate: '04 November 2025',
-    generatedBy: 'John Doe / 03:45 CRM',
+    reportDate: '08 November 2025',
+    generatedBy: 'Masrut Skills CRM System',
     department: 'Loan Management',
     clientInfo: {
       name: 'Niharika Rastogi',
-      age: '26',
-      contact: '9876543210',
-      email: 'niharika@gmail.com',
-      location: 'Noida'
+      age: '26 years',
+      contact: '+91 9876543210',
+      email: 'niharika.r@gmail.com',
+      location: 'Masrut, UP, India'
     },
     loanDetails: {
-      type: 'Business',
-      status: 'Initiated',
-      amountRequested: '5 Lakhs',
-      proposedInterest: '9.5%',
-      repaymentTerm: 'Medium-term',
-      creditScore: '725'
+      type: 'Business Loan',
+      status: 'Approved',
+      amountRequested: '₹5,00,000',
+      proposedInterest: '9.25%',
+      repaymentTerm: 'Medium-term (5 years)',
+      applicationDate: '01 November 2025',
+      approvalDate: '07 November 2025',
+      creditScore: '675 (a)'
     },
     leadSource: {
-      source: 'Online Inquiry',
+      source: 'Website Form',
       leadDate: '01 November 2025',
-      followUpDate: '03 November 2025',
-      response: 'Responsive with CRM'
+      assignedTo: 'Rahul Mehta',
+      followUpDate: '03 November 2025, 10:00 AM',
+      priorityLevel: 'HIGH'
     },
     communicationLog: [
       {
-        date: '1 Nov 2025',
-        type: 'Email',
-        status: 'Informative email sent to the client'
+        date: '4 Nov 2025',
+        mode: 'Email',
+        summary: 'Automated Acknowledgment sent'
       },
       {
-        date: '2 Nov 2025',
-        type: 'Call',
-        status: 'Not responsive',
-        notes: 'Client mentioned that business plans are being finalised and will revert with paperwork'
+        date: '5 Nov 2025',
+        mode: 'Call',
+        summary: 'No response',
+        notes: 'Left a message document submission reminders. Will follow up via email within 24hrs.'
+      },
+      {
+        date: '6 Nov 2025',
+        mode: 'Email',
+        summary: 'Documents received',
+        notes: 'Client submitted all required documents via portal.'
       }
     ],
     verificationStatus: [
       {
-        item: 'Verification of KYC documents',
+        step: 'Identity Verification (KYC)',
         status: 'completed',
-        notes: 'Adhaar and PAN card verified'
+        remarks: 'Aadhaar and PAN verified'
       },
       {
-        item: 'Business Registration',
-        status: 'pending',
-        notes: 'To be approved within three days'
+        step: 'Business Registration',
+        status: 'progress',
+        remarks: 'Pending final approval'
+      },
+      {
+        step: 'Credit Check',
+        status: 'completed',
+        remarks: 'Score:752'
       }
     ],
     feedback: {
-      text: 'Client was well-informed about Lead Application and expressed satisfaction with the follow-up process',
-      needs: [
-        'Requires a quick approval process',
-        'Prefers e-auction faster start-up call',
-        'Needs simplified documentation',
-        'Unclear about the email once the file is approved',
-        'Update client on email once the file is approved'
-      ]
-    }
+      text: 'Client was well-informed about loan procedures and interested in flexible repayment and prepayment options. Expressed concern over the time required for final verification to be complete.'
+    },
+    nextSteps: [
+      'Prepare sanction letter draft by 08 Nov 2025',
+      'Schedule digital signing appointment.',
+      'Update client via email once the file is forwarded to the loan officer.'
+    ]
   };
 
-  const handleDownloadPDF = async () => {
-    // Using browser's print functionality to generate PDF
-    // For production, use libraries like jsPDF or react-pdf
+  const handleDownloadPDF = () => {
     window.print();
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header - No print */}
-      <div className="sticky top-0 z-40 g-gradient-to-r from-purple-900 to-indigo-900 p-4 flex items-center justify-between shadow-lg print:hidden">
-        <div className="flex items-center gap-4">
+      <div className="bg-linear-to-r from-blue-600 to-blue-700 p-4 flex items-center justify-between shadow-md print:hidden">
+        <div className="flex items-center gap-3">
           <button 
-            onClick={() => router.back()}
-            className="text-white hover:bg-white/10 p-2 rounded-lg transition"
+            onClick={() => window.history.back()}
+            className="text-white hover:bg-white/20 p-2 rounded-lg transition"
+            aria-label="Go back"
           >
-            <ArrowLeft size={24} />
+            <ArrowLeft size={20} />
           </button>
-          <h1 className="text-white text-xl font-bold">Report</h1>
+          <h1 className="text-white text-lg font-semibold">CRM Report</h1>
         </div>
         <button
           onClick={handleDownloadPDF}
-          className="flex items-center gap-2 bg-white text-purple-900 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition"
+          className="flex items-center gap-2 bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition text-sm"
         >
-          <Download size={18} />
+          <Download size={16} />
           <span className="hidden sm:inline">Download PDF</span>
         </button>
       </div>
 
       {/* Report Content */}
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8" ref={reportRef}>
-        <div className="bg-white rounded-2xl shadow-lg print:shadow-none print:rounded-none">
+      <div className="max-w-6xl mx-auto p-3 sm:p-6 lg:p-8" ref={reportRef}>
+        <div className="bg-white rounded-lg shadow-sm print:shadow-none print:rounded-none border border-gray-200">
           {/* Report Header */}
-          <div className="g-gradient-to-r from-purple-900 to-indigo-900 p-6 sm:p-8 rounded-t-2xl print:rounded-none text-white">
-            <h1 className="text-2xl sm:text-3xl font-bold mb-4">{reportData.title}</h1>
-            <div className="space-y-2 text-sm sm:text-base">
-              <p><span className="font-semibold">Report Date:</span> {reportData.reportDate}</p>
-              <p><span className="font-semibold">Generated by:</span> {reportData.generatedBy}</p>
-              <p><span className="font-semibold">Department:</span> {reportData.department}</p>
+          <div className="border-b border-gray-200 p-4 sm:p-6">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">{reportData.title}</h1>
+            <div className="flex flex-wrap gap-4 text-xs sm:text-sm text-gray-600">
+              <span><span className="font-semibold">Report Date:</span> {reportData.reportDate}</span>
+              <span><span className="font-semibold">Generated By:</span> {reportData.generatedBy}</span>
+              <span><span className="font-semibold">Department:</span> {reportData.department}</span>
             </div>
           </div>
 
-          {/* Report Body */}
-          <div className="p-6 sm:p-8 space-y-8">
-            {/* Client Information */}
-            <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-purple-600 pb-2">
-                Client Information
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Name:</span>
-                    <span className="text-gray-800 font-semibold">{reportData.clientInfo.name}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Age:</span>
-                    <span className="text-gray-800">{reportData.clientInfo.age}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Contact:</span>
-                    <span className="text-gray-800">{reportData.clientInfo.contact}</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Email:</span>
-                    <span className="text-gray-800 text-sm break-all">{reportData.clientInfo.email}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Location:</span>
-                    <span className="text-gray-800">{reportData.clientInfo.location}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Loan Details */}
-            <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-purple-600 pb-2">
-                Loan Details
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Loan Type:</span>
-                    <span className="text-gray-800 font-semibold">{reportData.loanDetails.type}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Status:</span>
-                    <span className="text-gray-800">{reportData.loanDetails.status}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Amount Requested:</span>
-                    <span className="text-gray-800">{reportData.loanDetails.amountRequested}</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Proposed Interest:</span>
-                    <span className="text-gray-800">{reportData.loanDetails.proposedInterest}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Repayment Term:</span>
-                    <span className="text-gray-800">{reportData.loanDetails.repaymentTerm}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Credit Score:</span>
-                    <span className="text-gray-800 font-semibold">{reportData.loanDetails.creditScore}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Lead Source & Assignment */}
-            <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-purple-600 pb-2">
-                Lead Source & Assignment
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Source:</span>
-                    <span className="text-gray-800">{reportData.leadSource.source}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Lead Date:</span>
-                    <span className="text-gray-800">{reportData.leadSource.leadDate}</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Follow-up Date:</span>
-                    <span className="text-gray-800">{reportData.leadSource.followUpDate}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600 font-medium">Response:</span>
-                    <span className="text-gray-800">{reportData.leadSource.response}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Communication Log */}
-            <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-purple-600 pb-2">
-                Communication Log
-              </h2>
-              <div className="space-y-4">
-                {reportData.communicationLog.map((log, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-2">
-                      <div>
-                        <span className="text-gray-600 text-sm font-medium">Date:</span>
-                        <p className="text-gray-800 font-semibold">{log.date}</p>
-                      </div>
-                      <div>
-                        <span className="text-gray-600 text-sm font-medium">Type:</span>
-                        <p className="text-gray-800 font-semibold">{log.type}</p>
-                      </div>
-                      <div>
-                        <span className="text-gray-600 text-sm font-medium">Status:</span>
-                        <p className="text-gray-800">{log.status}</p>
-                      </div>
+          {/* Report Body - Two Column Layout */}
+          <div className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-6">
+                {/* Client Information */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Client Information
+                  </h2>
+                  <div className="space-y-2 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span className="text-gray-600 font-medium">Field</span>
+                      <span className="text-gray-600 font-medium">Details</span>
                     </div>
-                    {log.notes && (
-                      <div className="mt-2 pt-2 border-t border-gray-300">
-                        <span className="text-gray-600 text-sm font-medium">Notes:</span>
-                        <p className="text-gray-700 text-sm mt-1">{log.notes}</p>
-                      </div>
-                    )}
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Client Name</span>
+                      <span className="text-gray-900 font-medium">{reportData.clientInfo.name}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Age/Gender</span>
+                      <span className="text-gray-900">{reportData.clientInfo.age}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Contact</span>
+                      <span className="text-gray-900">{reportData.clientInfo.contact}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Email</span>
+                      <span className="text-gray-900 break-all">{reportData.clientInfo.email}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Location</span>
+                      <span className="text-gray-900">{reportData.clientInfo.location}</span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </section>
+                </section>
 
-            {/* Verification Status */}
-            <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-purple-600 pb-2">
-                Verification Status
-              </h2>
-              <div className="space-y-4">
-                {reportData.verificationStatus.map((item, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <div className="flex items-start gap-3">
-                      {item.status === 'completed' ? (
-                        <CheckCircle2 className="text-green-500 shrink-0 mt-1" size={20} />
-                      ) : (
-                        <AlertCircle className="text-orange-500 shrink-0 mt-1" size={20} />
-                      )}
-                      <div className="flex-1">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
-                          <span className="text-gray-800 font-semibold">{item.item}</span>
-                          <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                            item.status === 'completed' 
-                              ? 'bg-green-100 text-green-700' 
-                              : 'bg-orange-100 text-orange-700'
-                          }`}>
-                            {item.status === 'completed' ? 'Completed' : 'Pending'}
-                          </span>
+                {/* Lead Source & Assignment */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Lead Source & Assignment
+                  </h2>
+                  <div className="space-y-2 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span className="text-gray-600 font-medium">Field</span>
+                      <span className="text-gray-600 font-medium">Details</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Lead Source</span>
+                      <span className="text-gray-900">{reportData.leadSource.source}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Lead Date</span>
+                      <span className="text-gray-900">{reportData.leadSource.leadDate}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Assigned to</span>
+                      <span className="text-gray-900">{reportData.leadSource.assignedTo}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Follow-up Date</span>
+                      <span className="text-gray-900">{reportData.leadSource.followUpDate}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Priority Level</span>
+                      <span className="text-gray-900">{reportData.leadSource.priorityLevel}</span>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Verification Status */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Verification Status
+                  </h2>
+                  <div className="space-y-2 text-sm">
+                    <div className="grid grid-cols-3 gap-2">
+                      <span className="text-gray-600 font-medium">Step</span>
+                      <span className="text-gray-600 font-medium">Status</span>
+                      <span className="text-gray-600 font-medium">Remarks</span>
+                    </div>
+                    {reportData.verificationStatus.map((item, index) => (
+                      <div key={index} className="grid grid-cols-3 gap-2 py-2 border-t border-gray-200 items-center">
+                        <span className="text-gray-700">{item.step}</span>
+                        <div className="flex items-center gap-1">
+                          {item.status === 'completed' ? (
+                            <>
+                              <CheckCircle2 className="text-green-600" size={14} />
+                              <span className="text-green-600 text-xs">Completed</span>
+                            </>
+                          ) : (
+                            <>
+                              <Circle className="text-yellow-600" size={14} />
+                              <span className="text-yellow-600 text-xs">In Progress</span>
+                            </>
+                          )}
                         </div>
-                        <p className="text-gray-600 text-sm">{item.notes}</p>
+                        <span className="text-gray-900">{item.remarks}</span>
                       </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+
+              {/* Right Column */}
+              <div className="space-y-6">
+                {/* Loan Details */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Loan Details
+                  </h2>
+                  <div className="space-y-2 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span className="text-gray-600 font-medium">Field</span>
+                      <span className="text-gray-600 font-medium">Details</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Loan Type</span>
+                      <span className="text-gray-900 font-medium">{reportData.loanDetails.type}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Application ID</span>
+                      <span className="text-gray-900">{reportData.loanDetails.status}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Amount Requested</span>
+                      <span className="text-gray-900">{reportData.loanDetails.amountRequested}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Interest</span>
+                      <span className="text-gray-900">{reportData.loanDetails.proposedInterest}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Repayment Term</span>
+                      <span className="text-gray-900">{reportData.loanDetails.repaymentTerm}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Application Date</span>
+                      <span className="text-gray-900">{reportData.loanDetails.applicationDate}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Approval Date</span>
+                      <span className="text-gray-900">{reportData.loanDetails.approvalDate}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 py-2 border-t border-gray-200">
+                      <span className="text-gray-700">Credit/Sanction Status</span>
+                      <span className="text-gray-900">{reportData.loanDetails.creditScore}</span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </section>
+                </section>
 
-            {/* Feedback and Notes */}
-            <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-purple-600 pb-2">
-                Feedback and Notes
-              </h2>
-              <div className="bg-purple-50 p-4 sm:p-6 rounded-lg border border-purple-200">
-                <p className="text-gray-700 mb-4 leading-relaxed">{reportData.feedback.text}</p>
-                <div className="space-y-2">
-                  {reportData.feedback.needs.map((need, index) => (
-                    <div key={index} className="flex items-start gap-2">
-                      <span className="text-purple-600 mt-1">•</span>
-                      <span className="text-gray-700">{need}</span>
+                {/* Communication Log */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Communication Log
+                  </h2>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-4 gap-2 text-xs text-gray-600 font-medium">
+                      <span>Date</span>
+                      <span>Mode</span>
+                      <span className="col-span-2">Notes/Summary</span>
                     </div>
-                  ))}
-                </div>
+                    {reportData.communicationLog.map((log, index) => (
+                      <div key={index} className="border-t border-gray-200 pt-2">
+                        <div className="grid grid-cols-4 gap-2 text-sm">
+                          <span className="text-gray-900">{log.date}</span>
+                          <span className="text-gray-900">{log.mode}</span>
+                          <div className="col-span-2">
+                            <p className="text-gray-900 mb-1">{log.summary}</p>
+                            {log.notes && (
+                              <p className="text-gray-600 text-xs">{log.notes}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Feedback and Notes */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Feedback and Notes
+                  </h2>
+                  <div className="bg-blue-50 p-3 rounded text-sm text-gray-700 leading-relaxed">
+                    {reportData.feedback.text}
+                  </div>
+                </section>
+
+                {/* Next Steps */}
+                <section>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-300">
+                    Next Steps
+                  </h2>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    {reportData.nextSteps.map((step, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-blue-600 font-bold">•</span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               </div>
-            </section>
+            </div>
           </div>
 
           {/* Download Button - Only visible on screen, not in print */}
-          <div className="p-6 sm:p-8 print:hidden">
+          <div className="p-4 sm:p-6 border-t border-gray-200 print:hidden">
             <button
               onClick={handleDownloadPDF}
-              className="w-full g-gradient-to-r from-purple-900 to-indigo-900 text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg flex items-center justify-center gap-2"
+              className="w-full bg-linear-to-r from-purple-700 to-purple-800 text-white py-3 rounded-lg font-semibold hover:from-purple-800 hover:to-purple-900 transition shadow-md flex items-center justify-center gap-2"
             >
-              <Download size={20} />
+              <Download size={18} />
               Download PDF
             </button>
           </div>
@@ -333,7 +363,7 @@ export default function CRMReportPage() {
           }
           
           @page {
-            margin: 1cm;
+            margin: 0.5cm;
             size: A4;
           }
           

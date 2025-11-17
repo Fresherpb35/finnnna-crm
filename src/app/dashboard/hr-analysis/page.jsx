@@ -1,7 +1,7 @@
-'use client';
+"use client"
 
-import { useState, useEffect } from 'react';
-import { Users, FileText, Video, Book, Menu, X, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FileText, Video, Menu } from 'lucide-react';
 
 export default function HRManagementPage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,6 +60,16 @@ export default function HRManagementPage() {
     setCanResend(false);
   };
 
+  const handleEmployeeClick = (employee) => {
+    // Create URL-friendly ID from employee name
+    const employeeId = employee.name.toLowerCase().replace(/\s+/g, '-');
+    window.location.href = `/dashboard/hr-analysis/${employeeId}`;
+  };
+
+  const handleNavigation = (href) => {
+    window.location.href = href;
+  };
+
   const statsCards = [
     { label: 'Employees', value: '25', icon: '👥', color: 'bg-blue-50', textColor: 'text-blue-600' },
     { label: 'Avg Attendance', value: '85%', icon: '✅', color: 'bg-green-50', textColor: 'text-green-600' },
@@ -82,7 +92,7 @@ export default function HRManagementPage() {
   ];
 
   const trainingResources = [
-    { title: 'SOP Training Module', subtitle: 'A generated MCQ tests', type: 'Watch Test →', color: 'bg-blue-50', textColor: 'text-blue-600' },
+    { title: 'SOP Training Module', subtitle: 'AI generated MCQ tests', type: 'Watch Test →', color: 'bg-blue-50', textColor: 'text-blue-600' },
     { title: 'Video Tutorials', subtitle: 'Training series', type: 'Watch Videos →', color: 'bg-green-50', textColor: 'text-green-600' },
     { title: 'Document Library', subtitle: 'Reference materials', type: 'Download PDFs →', color: 'bg-purple-50', textColor: 'text-purple-600' }
   ];
@@ -104,17 +114,13 @@ export default function HRManagementPage() {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed top-0 left-0 h-full w-64 bg-linear-to-b from-purple-950 to-purple-900 shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${menuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <div className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-purple-950 to-purple-900 shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${menuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="flex flex-col h-full">
           {/* Menu Header */}
           <div className="p-4 sm:p-6 border-b border-purple-700">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                <img 
-                  src="/images/user.png"
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg">
+                U
               </div>
               <div>
                 <p className="text-white font-semibold text-sm">Welcome, User!</p>
@@ -125,10 +131,10 @@ export default function HRManagementPage() {
           {/* Menu Items */}
           <nav className="flex-1 py-2">
             {menuItems.map((item, index) => (
-              <a 
+              <a
                 key={index}
                 href={item.href}
-                className={`flex items-center px-6 py-3 text-sm transition-all ${
+                className={`block w-full px-6 py-3 text-sm transition-all ${
                   item.active
                     ? 'bg-purple-700 text-white font-medium border-l-4 border-cyan-400'
                     : 'text-gray-300 hover:bg-purple-700/50 hover:text-white border-l-4 border-transparent hover:border-cyan-400'
@@ -191,19 +197,19 @@ export default function HRManagementPage() {
                   </div>
                   <div className="space-y-3">
                     {documents.map((doc, index) => (
-                      <div 
-                        key={index} 
-                        className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                      <button
+                        key={index}
                         onClick={() => handleDocumentClick(doc.title)}
+                        className="w-full flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer"
                       >
                         <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
                           <doc.icon size={18} className="text-blue-600" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 text-left">
                           <p className="font-semibold text-gray-900 text-sm truncate">{doc.title}</p>
                           <p className="text-xs text-gray-500 truncate">{doc.subtitle}</p>
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-200">
@@ -221,11 +227,11 @@ export default function HRManagementPage() {
                   </div>
                   <div className="space-y-3">
                     {trainingResources.map((resource, index) => (
-                      <div key={index} className={`${resource.color} border border-gray-200 rounded-lg p-3 cursor-pointer hover:shadow-md transition`}>
+                      <button key={index} className={`w-full ${resource.color} border border-gray-200 rounded-lg p-3 cursor-pointer hover:shadow-md transition text-left`}>
                         <p className="font-semibold text-gray-900 text-sm mb-1">{resource.title}</p>
                         <p className="text-xs text-gray-600 mb-2">{resource.subtitle}</p>
                         <p className={`text-xs font-medium ${resource.textColor}`}>{resource.type}</p>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -237,16 +243,25 @@ export default function HRManagementPage() {
                 <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-gray-900 text-base md:text-lg">Employee Overview</h3>
-                    <button className="text-xs sm:text-sm text-purple-600 font-medium hover:text-purple-700">VIEW ALL</button>
+                    <a
+                      href="/dashboard/employees"
+                      className="text-xs sm:text-sm text-purple-600 font-medium hover:text-purple-700 cursor-pointer"
+                    >
+                      VIEW ALL
+                    </a>
                   </div>
                   <div className="space-y-3">
                     {employees.map((employee, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                      <button
+                        key={index}
+                        onClick={() => handleEmployeeClick(employee)}
+                        className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                      >
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <div className={`w-10 h-10 sm:w-12 sm:h-12 ${employee.color} rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-md`}>
                             {employee.initials}
                           </div>
-                          <div className="min-w-0 flex-1">
+                          <div className="min-w-0 flex-1 text-left">
                             <p className="font-semibold text-gray-900 text-sm truncate">{employee.name}</p>
                             <p className="text-xs text-gray-500">{employee.role}</p>
                           </div>
@@ -264,7 +279,7 @@ export default function HRManagementPage() {
                             {employee.status}
                           </span>
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
