@@ -68,17 +68,11 @@ export default function ChatSupportPage() {
   const [activeTab, setActiveTab] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
   const tabs = ['All', 'Hot', 'Warm', 'Cold'];
-
-  // Ensure client-side rendering
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Auto-scroll to bottom when messages change
   const scrollToBottom = useCallback(() => {
@@ -179,32 +173,18 @@ export default function ChatSupportPage() {
 
   // Handle back navigation
   const handleBack = useCallback(() => {
-    if (typeof window !== 'undefined' && window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/dashboard');
-    }
+    router.push('/dashboard');
   }, [router]);
 
   // Handle phone call
   const handleCall = useCallback(() => {
     if (selectedChat) {
-      // Implement actual call functionality
       console.log(`Initiating call to ${selectedChat.name}`);
       if (typeof window !== 'undefined') {
         alert(`Calling ${selectedChat.name}...`);
       }
     }
   }, [selectedChat]);
-
-  // Don't render until client-side (prevents hydration issues)
-  if (!isClient) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-linear-to-br from-indigo-900 via-purple-900 to-indigo-900">
-        <div className="text-white text-lg">Loading...</div>
-      </div>
-    );
-  }
 
   const displayedChats = filteredChats();
 
@@ -376,10 +356,9 @@ export default function ChatSupportPage() {
 
             {/* Messages Area */}
             <div 
-              className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4"
+              className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 bg-gray-200"
               style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239ca3af' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                backgroundColor: '#e5e7eb'
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239ca3af' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
               }}
             >
               {/* Avatar at top */}
