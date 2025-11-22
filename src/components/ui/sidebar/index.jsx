@@ -1,107 +1,168 @@
 "use client"
-import React from 'react';
-import { X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useCallback } from 'react';
+import { X, Settings, Home, Users, CheckSquare, Briefcase, FileText, BarChart3, MessageSquare } from 'lucide-react';
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen, activeMenuItem = 'Dashboard' }) {
-  const router = useRouter();
+const MENU_ITEMS = [
+  { label: 'Dashboard', href: '/dashboard', icon: Home },
+  { label: 'Leads & Pipelines', href: '/dashboard/lead-pipelines', icon: BarChart3 },
+  { label: 'Tasks', href: '/dashboard/tasks', icon: CheckSquare },
+  { label: 'Clients', href: '/dashboard/clients', icon: Users },
+  { label: 'Accounting Reports', href: '/dashboard/accounting-reports', icon: FileText },
+  { label: 'HR Analytics', href: '/dashboard/hr-analysis', icon: Briefcase },
+  { label: 'Chat Support', href: '/dashboard/chat-support', icon: MessageSquare }
+];
 
-  const handleProfileClick = () => {
-    router.push('/dashboard/profile');
-  };
+export default function Sidebar({ 
+  sidebarOpen, 
+  setSidebarOpen, 
+  activeMenuItem = 'Dashboard',
+  userImage = '/images/user.png',
+  userName = 'User'
+}) {
+  // Close sidebar on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && sidebarOpen) {
+        setSidebarOpen(false);
+      }
+    };
 
-  const handleSettingsClick = () => {
-    router.push('/dashboard/settings');
-  };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [sidebarOpen, setSidebarOpen]);
 
-  const menuItems = [
-    { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Leads & Pipelines', href: '/dashboard/lead-pipelines' },
-    { label: 'Tasks', href: '/dashboard/tasks' },
-    { label: 'Clients', href: '/dashboard/clients' },
-    { label: 'Accounting Reports', href: '/dashboard/accounting-reports' },
-    { label: 'HR Analytics', href: '/dashboard/hr-analysis' },
-    { label: 'Chat Support', href: '/dashboard/chat-support' }
-  ];
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [sidebarOpen]);
+
+  const handleProfileClick = useCallback(() => {
+    window.location.href = '/dashboard/profile';
+  }, []);
+
+  const handleSettingsClick = useCallback(() => {
+    window.location.href = '/dashboard/settings';
+  }, []);
+
+  const handleMenuClick = useCallback((href) => {
+    window.location.href = href;
+    // Close sidebar on mobile after navigation
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  }, [setSidebarOpen]);
+
+  const handleOverlayClick = useCallback(() => {
+    setSidebarOpen(false);
+  }, [setSidebarOpen]);
+
+  const handleCloseSidebar = useCallback(() => {
+    setSidebarOpen(false);
+  }, [setSidebarOpen]);
 
   return (
     <>
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
+          onClick={handleOverlayClick}
+          aria-hidden="true"
         />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-linear-to-b from-purple-900 via-purple-800 to-purple-900 transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out shadow-2xl lg:relative overflow-y-auto scrollbar-hide`}>
-
+      <aside 
+        className={`fixed inset-y-0 left-0 z-50 w-72 lg:w-64 bg-linear-to-b from-purple-950 via-purple-900 to-purple-950 transform lg:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 ease-in-out shadow-2xl lg:relative overflow-y-auto scrollbar-hide`}
+        role="navigation"
+        aria-label="Main navigation"
+      >
         {/* Profile Section */}
-        <div className="flex items-center justify-between p-4 lg:p-6">
-          <div onClick={handleProfileClick}
-            className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition">
-            
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden">
-              <img src="/images/user.png" alt="User" className="w-full h-full object-cover" />
+        <div className="flex items-center justify-between p-6 lg:p-6 border-b border-white/10">
+          <button
+            onClick={handleProfileClick}
+            className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg p-2 -m-2"
+            aria-label="Go to profile"
+          >
+            <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white flex items-center justify-center overflow-hidden ring-2 ring-white/20 shadow-lg">
+              <img 
+                src={userImage} 
+                alt={`${userName}'s profile`}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23999"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
+                }}
+              />
             </div>
 
-            <p className="text-white font-semibold text-base">
-              Welcome, User!
-            </p>
-          </div>
+            <div className="text-left">
+              <p className="text-white font-semibold text-base lg:text-lg">
+                Welcome!
+              </p>
+              <p className="text-white/70 text-sm">
+                {userName}
+              </p>
+            </div>
+          </button>
 
           <button 
-            onClick={() => setSidebarOpen(false)} 
-            className="text-white hover:bg-purple-800 p-2 rounded-lg transition lg:hidden"
+            onClick={handleCloseSidebar} 
+            className="text-white hover:bg-white/10 p-2 rounded-lg transition-colors lg:hidden focus:outline-none focus:ring-2 focus:ring-white/50"
+            aria-label="Close sidebar"
           >
-            <X size={22} />
+            <X size={24} />
           </button>
         </div>
         
         {/* Menu */}
-        <nav className="py-2 pb-24">
-          {menuItems.map((item, index) => (
-            <a 
-              key={index} 
-              href={item.href}
-              className={`flex items-center px-6 py-4 transition-all text-base ${
-                item.label === activeMenuItem
-                  ? 'text-white bg-purple-700/50 border-l-4 border-white font-semibold'
-                  : 'text-white/70 hover:text-white hover:bg-purple-700/30 border-l-4 border-transparent'
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
-          
-          {/* Settings */}
-          <div className="absolute bottom-4 left-0 right-0 px-6">
-            <button 
-              onClick={handleSettingsClick}
-              className="flex items-center gap-2 text-white/70 hover:text-white transition-all w-full text-base"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0..." />
-              </svg>
-              <span>Settings</span>
-            </button>
-          </div>
+        <nav className="py-4 pb-28" aria-label="Main menu">
+          <ul className="space-y-1">
+            {MENU_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const isActive = item.label === activeMenuItem;
+              
+              return (
+                <li key={item.label}>
+                  <button
+                    onClick={() => handleMenuClick(item.href)}
+                    className={`flex items-center gap-3 px-6 py-4 transition-all w-full text-left text-base lg:text-base ${
+                      isActive
+                        ? 'text-white bg-white/10 border-l-4 border-white font-semibold shadow-lg'
+                        : 'text-white/70 hover:text-white hover:bg-white/5 border-l-4 border-transparent'
+                    }`}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    <Icon size={20} className="shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </nav>
 
-        {/* Scrollbar Hide */}
-        <style jsx>{`
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-
-      </div>
+        {/* Settings - Fixed at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-purple-950 to-transparent py-6 px-6 border-t border-white/10">
+          <button 
+            onClick={handleSettingsClick}
+            className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 transition-all w-full text-left px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50"
+            aria-label="Go to settings"
+          >
+            <Settings size={20} className="shrink-0" />
+            <span className="text-base lg:text-base font-medium">Settings</span>
+          </button>
+        </div>
+      </aside>
     </>
   );
 }
